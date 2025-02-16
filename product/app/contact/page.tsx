@@ -6,7 +6,61 @@ import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
+import axios from "axios";
+
+interface ContactFormData {
+  Name: string;
+  Email: string;
+  Phone: string;
+  Message: string;
+}
+
+interface ApiResponse {
+  Id?: number;
+  msg?: string;
+}
+
+async function createRecord(data: ContactFormData): Promise<ApiResponse> {
+  try {
+    const response = await axios.post<ApiResponse>(
+      "https://app.nocodb.com/api/v2/tables/mytx5n97efusyct/records",
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "xc-token": process.env.NEXT_PUBLIC_NC_TOKEN,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Lỗi khi gửi dữ liệu:", error);
+    return { msg: "Có lỗi xảy ra khi gửi tin nhắn" };
+  }
+}
+
 export default function ContactUs() {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+
+    const data: ContactFormData = {
+      Name: formData.get("name") as string,
+      Email: formData.get("email") as string,
+      Phone: formData.get("phone") as string,
+      Message: formData.get("message") as string,
+    };
+
+    const result = await createRecord(data);
+    if (result?.Id) {
+      alert("Tin nhắn đã được gửi thành công!");
+      (e.target as HTMLFormElement).reset();
+    } else {
+      alert(result.msg || "Có lỗi xảy ra khi gửi tin nhắn");
+      (e.target as HTMLFormElement).reset();
+    }
+  };
+
   return (
     <div className="mx-auto w-full px-4 md:px-0">
       {/* Banner with animation */}
@@ -21,7 +75,6 @@ export default function ContactUs() {
             alt="Contact Us Banner"
             layout="fill"
             objectFit="cover"
-            className="rounded-lg"
             priority
           />
           <div className="absolute inset-0 flex items-center justify-center bg-black/40 text-white text-center px-6">
@@ -42,11 +95,20 @@ export default function ContactUs() {
             <CardTitle>Gửi Tin Nhắn Cho Chúng Tôi</CardTitle>
           </CardHeader>
           <CardContent>
-            <form className="space-y-4">
-              <Input type="text" placeholder="Họ và tên" required />
-              <Input type="email" placeholder="Email" required />
-              <Input type="text" placeholder="Số điện thoại" required />
-              <Textarea placeholder="Nội dung tin nhắn" required />
+            <form className="space-y-4" onSubmit={handleSubmit}>
+              <Input name="name" type="text" placeholder="Họ và tên" required />
+              <Input name="email" type="email" placeholder="Email" required />
+              <Input
+                name="phone"
+                type="text"
+                placeholder="Số điện thoại"
+                required
+              />
+              <Textarea
+                name="message"
+                placeholder="Nội dung tin nhắn"
+                required
+              />
               <Button type="submit" className="w-full">
                 Gửi Tin Nhắn
               </Button>

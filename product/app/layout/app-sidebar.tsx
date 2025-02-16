@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { Phone, Info, Home, ShoppingBag, Menu, Link } from "lucide-react";
+import { Phone, Info, Home, ShoppingBag, Menu } from "lucide-react";
 
 import {
   Sidebar,
@@ -22,6 +22,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import Link from "next/link";
 
 // This is sample data.
 const menuItems = {
@@ -99,21 +100,24 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SheetTrigger>
           <SheetContent side="left" className="w-[300px]">
             <SheetHeader>
-              <SheetTitle>Menu</SheetTitle>
+              <SheetTitle className="text-black">Menu</SheetTitle>
+
+              <div className="p-4">
+                {menuItems.navMain.map((item) => (
+                  <Link
+                    key={item.url}
+                    href={item.url}
+                    className="flex items-center gap-4 p-2 rounded"
+                    onClick={toggleSidebar}
+                  >
+                    <>
+                      <item.icon className="h-8 w-8" />
+                      <p className="text-sm">{item.title}</p>
+                    </>
+                  </Link>
+                ))}
+              </div>
             </SheetHeader>
-            <div className="p-4">
-              {menuItems.navMain.map((item) => (
-                <Link
-                  key={item.url}
-                  href={item.url}
-                  className="flex items-center gap-4 p-2 rounded !text-black"
-                  onClick={toggleSidebar}
-                >
-                  <item.icon className="h-5 w-5" />
-                  <span className="!text-black">{item.title}</span>
-                </Link>
-              ))}
-            </div>
           </SheetContent>
         </Sheet>
       </div>
@@ -148,17 +152,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     {item.title}
                   </a>
                 </SidebarMenuButton>
-                {/* {item.items?.length ? (
-                  <SidebarMenuSub>
-                    {item.items.map((item) => (
-                      <SidebarMenuSubItem key={item?.title}>
-                        <SidebarMenuSubButton asChild isActive={item?.isActive}>
-                          <a href={item?.url}>{item?.title}</a>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                    ))}
-                  </SidebarMenuSub>
-                ) : null} */}
               </SidebarMenuItem>
             ))}
           </SidebarMenu>

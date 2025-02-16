@@ -1,7 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Footer from "../layout/footer";
 
@@ -55,7 +54,6 @@ export default function AboutUs() {
         className="mt-8 md:mt-10 grid grid-cols-1 md:px-10 gap-8 md:gap-10 mx-auto w-full"
       >
         <div>
-          <h2 className="text-3xl font-bold mb-4">Sứ Mệnh Của Chúng Tôi</h2>
           <p className="text-gray-700 leading-relaxed">
             Eltamd là thương hiệu dược mỹ phẩm được ưa chuộng hàng đầu của Mỹ.
             Với hơn 25 năm kinh nghiệm chuyên sâu trong ngành, EltaMD là một
@@ -98,10 +96,10 @@ export default function AboutUs() {
         initial="hidden"
         animate="show"
         variants={containerVariants}
-        className="mt-12 md:mt-16 px-4"
+        className="mt-12 md:my-16 px-4"
       >
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-10">
-          Giá Trị Cốt Lõi
+          GIÁ TRỊ CỐT LÕI
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           {["Chất Lượng", "Đổi Mới", "Chăm Sóc"].map((value) => (
@@ -124,24 +122,6 @@ export default function AboutUs() {
             </motion.div>
           ))}
         </div>
-      </motion.div>
-
-      {/* CTA Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        className="my-12 md:mt-16 text-center px-4"
-      >
-        <h2 className="text-2xl md:text-3xl font-bold">
-          Khám Phá Sản Phẩm Của Chúng Tôi
-        </h2>
-        <p className="text-gray-600 mt-2 text-sm md:text-base">
-          Tận hưởng làn da khỏe mạnh với sản phẩm của chúng tôi ngay hôm nay.
-        </p>
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <Button className="mt-4 md:mt-6">Xem Sản Phẩm</Button>
-        </motion.div>
       </motion.div>
 
       <Footer />

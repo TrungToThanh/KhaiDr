@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
       "www.laneige.com",
       "www.etude.com",
       "www.sulwhasoo.com",
+      "nocohub-001-prod-app-attachments.s3.us-east-2.amazonaws.com",
     ],
   },
 };

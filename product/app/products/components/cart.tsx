@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { X } from "lucide-react";
-import { Product } from "./types";
+import { ProductDto } from "@/types/types";
 
 interface CartItem {
   productId: number;
@@ -27,12 +27,12 @@ export default function Cart({
   showCart: boolean;
   setShowCart: (show: boolean) => void;
   cartItems: CartItem[];
-  addToCart: (product: Product) => void;
+  addToCart: (product: ProductDto, quantity: number) => void;
   removeFromCart: (productId: number) => void;
   deleteFromCart: (productId: number) => void;
   totalItems: number;
   totalPrice: number;
-  products: Product[];
+  products: ProductDto[];
 }) {
   return (
     <>
@@ -43,7 +43,7 @@ export default function Cart({
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: 100, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed top-4 right-4 z-50 w-full max-w-md md:w-96 bg-white rounded-xl shadow-2xl p-4 md:p-6 flex flex-col"
+            className="fixed top-0 right-0 bottom-0 md:top-4 md:right-4 z-50 w-full md:max-w-md md:w-96 bg-white rounded-none md:rounded-xl shadow-2xl p-4 md:p-6 flex flex-col"
             style={{ maxHeight: "calc(100vh - 2rem)" }}
           >
             <div className="flex justify-between items-center mb-4">
@@ -96,7 +96,8 @@ export default function Cart({
                           <button
                             onClick={() =>
                               addToCart(
-                                products.find((p) => p.id === item.productId)!
+                                products.find((p) => p.Id === item.productId)!,
+                                1
                               )
                             }
                             className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 text-sm"
@@ -123,9 +124,11 @@ export default function Cart({
                   {totalPrice.toLocaleString()}₫
                 </span>
               </div>
-              <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">
-                Thanh toán
-              </button>
+              {totalItems > 0 && (
+                <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                  Đặt hàng
+                </button>
+              )}
             </div>
           </motion.div>
         </div>
