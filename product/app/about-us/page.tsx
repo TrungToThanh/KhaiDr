@@ -1,88 +1,150 @@
+"use client";
+import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Footer from "../layout/footer";
+
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.3,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 },
+};
 
 export default function AboutUs() {
   return (
-    <div className="container mx-auto px-4 py-10">
+    <div className="mx-auto w-full">
       {/* Banner */}
-      <div className="relative w-full h-[400px]">
+      <motion.div
+        initial="hidden"
+        animate="show"
+        variants={containerVariants}
+        className="relative w-full h-[200px]"
+      >
         <Image
-          src="/images/about-banner.jpg"
+          src="https://theme.hstatic.net/1000288528/1000382531/14/about_header_bg.jpg?v=126"
           alt="About Us Banner"
-          layout="fill"
-          objectFit="cover"
+          fill
           className="rounded-lg"
+          style={{ objectFit: "cover" }}
+          priority
         />
-        <div className="absolute inset-0 flex items-center justify-center bg-black/40 text-white text-center px-6">
-          <h1 className="text-4xl font-bold">Về Chúng Tôi</h1>
-        </div>
-      </div>
+        <motion.div
+          variants={itemVariants}
+          className="absolute inset-0 flex items-center justify-center bg-black/40 text-white px-4"
+        >
+          <h1 className="text-3xl md:text-4xl font-bold">GIỚI THIỆU</h1>
+        </motion.div>
+      </motion.div>
 
       {/* Content Section */}
-      <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+      <motion.div
+        initial="hidden"
+        animate="show"
+        variants={containerVariants}
+        className="mt-8 md:mt-10 grid grid-cols-1 md:px-10 gap-8 md:gap-10 mx-auto w-full"
+      >
         <div>
           <h2 className="text-3xl font-bold mb-4">Sứ Mệnh Của Chúng Tôi</h2>
           <p className="text-gray-700 leading-relaxed">
-            Chúng tôi cam kết cung cấp các sản phẩm chăm sóc da chất lượng cao,
-            an toàn và hiệu quả, giúp mọi người có được làn da khỏe mạnh và rạng
-            rỡ.
+            Eltamd là thương hiệu dược mỹ phẩm được ưa chuộng hàng đầu của Mỹ.
+            Với hơn 25 năm kinh nghiệm chuyên sâu trong ngành, EltaMD là một
+            trong những hãng dược mỹ phẩm tiên phong trong việc chăm sóc làn da,
+            với sứ mệnh mang lại làn da đẹp nhất và tự nhiên nhất có thể cho
+            người dùng.
           </p>
-          <Button className="mt-6">Tìm Hiểu Thêm</Button>
+
+          <p className="text-gray-700 leading-relaxed md:mt-4">
+            Trải qua nhiều công trình nghiên cứu sinh học, dược lý và kiểm
+            nghiệm lâm sàng nghiêm ngặt, sản phẩm của EltaMD luôn là sự lựa chọn
+            hàng đầu của bác sĩ da liễu, bệnh viện, phòng khám chuyên nghiệp,
+            viện bỏng quốc da… được giám định và chỉ định bởi chuyên khoa Da
+            Liễu, và được Dược Sĩ khuyên dùng.
+          </p>
         </div>
-        <Image
-          src="/images/mission.jpg"
-          alt="Mission"
-          width={500}
-          height={400}
-          className="rounded-lg"
-        />
-      </div>
+        <motion.div
+          variants={itemVariants}
+          className="relative w-full max-w-3xl h-64 md:h-[380px] mx-auto justify-center"
+        >
+          <Image
+            src="https://theme.hstatic.net/1000288528/1000382531/14/about_shop.png?v=126"
+            alt="About Us Shop"
+            fill
+            className="rounded-lg object-cover"
+          />
+        </motion.div>
+        <p className="font-bold text-3xl text-center">
+          CHUẨN MỰC HOÀN MỸ CỦA MỌI LOẠI DA
+        </p>
+        <p className="text-center">
+          Vượt qua ranh giới lãnh thổ, các dòng sản phẩm của EltaMD hiện đã có
+          mặt tại nhiều nước trên thế giới và được hàng triệu phụ nữ tin dùng
+          nhờ tính năng nổi bật.
+        </p>
+      </motion.div>
 
       {/* Core Values */}
-      <div className="mt-16">
-        <h2 className="text-3xl font-bold text-center mb-10">
+      <motion.div
+        initial="hidden"
+        animate="show"
+        variants={containerVariants}
+        className="mt-12 md:mt-16 px-4"
+      >
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-10">
           Giá Trị Cốt Lõi
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Chất Lượng</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>Cam kết sản xuất các sản phẩm đạt tiêu chuẩn y tế cao nhất.</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>Đổi Mới</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>
-                Luôn cập nhật công nghệ và nghiên cứu mới nhất để cải thiện sản
-                phẩm.
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>Chăm Sóc</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>Quan tâm đến sức khỏe và sắc đẹp của từng khách hàng.</p>
-            </CardContent>
-          </Card>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+          {["Chất Lượng", "Đổi Mới", "Chăm Sóc"].map((value) => (
+            <motion.div key={value} variants={itemVariants}>
+              <Card className="h-full">
+                <CardHeader>
+                  <CardTitle className="text-lg md:text-xl">{value}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm md:text-base">
+                    {value === "Chất Lượng" &&
+                      "Cam kết sản xuất các sản phẩm đạt tiêu chuẩn y tế cao nhất."}
+                    {value === "Đổi Mới" &&
+                      "Luôn cập nhật công nghệ và nghiên cứu mới nhất để cải thiện sản phẩm."}
+                    {value === "Chăm Sóc" &&
+                      "Quan tâm đến sức khỏe và sắc đẹp của từng khách hàng."}
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* CTA Section */}
-      <div className="mt-16 text-center">
-        <h2 className="text-3xl font-bold">Khám Phá Sản Phẩm Của Chúng Tôi</h2>
-        <p className="text-gray-600 mt-2">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+        className="my-12 md:mt-16 text-center px-4"
+      >
+        <h2 className="text-2xl md:text-3xl font-bold">
+          Khám Phá Sản Phẩm Của Chúng Tôi
+        </h2>
+        <p className="text-gray-600 mt-2 text-sm md:text-base">
           Tận hưởng làn da khỏe mạnh với sản phẩm của chúng tôi ngay hôm nay.
         </p>
-        <Button className="mt-6">Xem Sản Phẩm</Button>
-      </div>
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <Button className="mt-4 md:mt-6">Xem Sản Phẩm</Button>
+        </motion.div>
+      </motion.div>
+
+      <Footer />
     </div>
   );
 }
