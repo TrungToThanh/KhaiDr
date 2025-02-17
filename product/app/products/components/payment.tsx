@@ -13,7 +13,7 @@ export const Payment: React.FC<PaymentProps> = ({
 }) => {
   return (
     <>
-      <div className="fixed top-4 right-4 z-50">
+      <div className="fixed top-4 right-4 z-30">
         <button
           onClick={() => setShowCart(!showCart)}
           className="p-2 mt-10 bg-white rounded-full shadow-lg relative"

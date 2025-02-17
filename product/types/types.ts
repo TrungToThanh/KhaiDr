@@ -43,3 +43,16 @@ export type CategoryListDto = {
   categoryName: string;
   categoryCount: number;
 };
+
+export type PaymentDto = {
+  Code: string;
+  ProductId: number;
+  ProductName: string;
+  Quantity: number;
+  UnitPrice: number;
+  Amount: number;
+  UserName: string;
+  UserPhone: string;
+  UserAddress: string;
+  Note: string;
+};

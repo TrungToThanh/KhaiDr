@@ -32,7 +32,7 @@ export const DesktopFilter = ({
       <motion.div
         initial={{ x: -20, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
-        className="hidden md:block w-full md:w-64 pr-0 md:pr-6 border-r"
+        className="hidden md:block w-full md:w-64 pr-0 md:pr-6 border-r pt-6"
       >
         <div className="mb-8">
           <div className="text-xl font-semibold mb-4 flex items-center gap-2">

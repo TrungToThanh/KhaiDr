@@ -3,11 +3,15 @@ import { fetcher } from "@/configs/axios";
 import { CategoryListDto, ProductDto } from "@/types/types";
 
 export const useGetProduct = () => {
-  const { data } = useSWR("/tables/mf1i2sltvkvrua2/records", fetcher, {
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-  });
+  const { data, isLoading } = useSWR(
+    "/tables/mf1i2sltvkvrua2/records",
+    fetcher,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  );
 
   const products: ProductDto[] = data?.list || [];
 
@@ -42,5 +46,5 @@ export const useGetProduct = () => {
 
   const maxPrice = Math.max(...products.map((p) => p.price || 0), 0);
 
-  return { products, categories, categoryList, brands, maxPrice };
+  return { products, categories, categoryList, brands, maxPrice, isLoading };
 };

@@ -146,7 +146,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <SidebarMenuButton asChild>
                   <a
                     href={item.url}
-                    className="font-bold line-clamp-[50px] py-6 pl-4"
+                    className="font-bold line-clamp-[50px] py-6 pl-4 hover:scale-110"
                   >
                     <item.icon className="h-5 w-5" />
                     {item.title}

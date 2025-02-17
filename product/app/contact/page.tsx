@@ -7,6 +7,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 
 import axios from "axios";
+import { BorderBeam } from "@/components/magicui/border-beam";
 
 interface ContactFormData {
   Name: string;
@@ -62,14 +63,14 @@ export default function ContactUs() {
   };
 
   return (
-    <div className="mx-auto w-full px-4 md:px-0">
+    <div className="mx-auto w-full mt-12 md:mt-0 md:px-0">
       {/* Banner with animation */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="relative w-full h-[200px]">
+        <div className="relative w-full h-[110px]">
           <Image
             src="https://theme.hstatic.net/1000288528/1000382531/14/contact_img.jpg?v=126"
             alt="Contact Us Banner"
@@ -88,9 +89,9 @@ export default function ContactUs() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="mt-8 md:mt-10 max-w-2xl mx-auto"
+        className="mt-8 md:mt-10 max-w-2xl mx-auto px-4 md:px-0"
       >
-        <Card>
+        <Card className="relative overflow-hidden">
           <CardHeader>
             <CardTitle>Gửi Tin Nhắn Cho Chúng Tôi</CardTitle>
           </CardHeader>
@@ -109,11 +110,12 @@ export default function ContactUs() {
                 placeholder="Nội dung tin nhắn"
                 required
               />
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full bg-[#B10836]">
                 Gửi Tin Nhắn
               </Button>
             </form>
           </CardContent>
+          <BorderBeam duration={8} size={100} />
         </Card>
       </motion.div>
 

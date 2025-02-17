@@ -2,10 +2,12 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { ShoppingBagIcon } from "lucide-react";
+import { ShoppingBasket } from "lucide-react";
 import { ProductDto } from "@/types/types";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { toast } from "sonner";
+import { CoolMode } from "@/components/magicui/cool-mode";
 
 export const ProductListView = ({
   products,
@@ -31,9 +33,9 @@ export const ProductListView = ({
         return (
           <motion.div
             key={product.Id}
-            className="group p-4 rounded-xl border hover:bg-gray-50 flex gap-3 h-full items-center"
+            className="group p-4 rounded-xl border flex gap-3 h-full items-center"
           >
-            <div className="relative w-full max-w-[300px] h-48 rounded-lg overflow-hidden">
+            <div className="relative w-full max-w-[300px] h-48 rounded-lg overflow-hidden  cursor-pointer">
               <Image
                 src={
                   product.imageUrl?.at(0)?.thumbnails?.card_cover?.signedUrl ||
@@ -42,6 +44,7 @@ export const ProductListView = ({
                 alt={product.title}
                 layout="fill"
                 objectFit="contain"
+                className="group-hover:scale-110"
               />
             </div>
             <div className="flex-1">
@@ -57,7 +60,7 @@ export const ProductListView = ({
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-500 mt-auto">
                 <span className="flex items-center gap-1">
-                  <ShoppingBagIcon className="w-4 h-4" />
+                  <ShoppingBasket className="w-4 h-4" />
                   {product.sold} đã bán
                 </span>
                 <span>•</span>
@@ -82,13 +85,18 @@ export const ProductListView = ({
                   +
                 </Button>
               </div>
-              <Button
-                onClick={() => addToCart(product, quantity)}
-                className="mt-4"
-              >
-                <ShoppingBagIcon className="w-4 h-4" />
-                <span>Thêm vào giỏ</span>
-              </Button>
+              <CoolMode>
+                <Button
+                  onClick={() => {
+                    addToCart(product, quantity);
+                    toast.success("Đã thêm thành công!");
+                  }}
+                  className="bg-[#B10836] mt-4"
+                >
+                  <ShoppingBasket className="w-4 h-4" />
+                  <span>Thêm vào giỏ</span>
+                </Button>
+              </CoolMode>
             </div>
           </motion.div>
         );

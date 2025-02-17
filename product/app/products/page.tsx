@@ -14,9 +14,11 @@ import { MobileFilter } from "./components/mobile-filter";
 import { CartItem, CategoryListDto, ProductDto } from "@/types/types";
 import Footer from "../layout/footer";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProductPage() {
-  const { products, brands, categoryList, maxPrice } = useGetProduct();
+  const { products, brands, categoryList, maxPrice, isLoading } =
+    useGetProduct();
   const isMobile = useIsMobile();
 
   const [selectedCategories, setSelectedCategories] = useState<
@@ -105,6 +107,8 @@ export default function ProductPage() {
     0
   );
 
+  if (isLoading) return <Skeleton />;
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header Image */}
@@ -112,20 +116,22 @@ export default function ProductPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full mb-4 md:mb-8"
+        className="w-full"
       >
-        <div className="relative w-full h-[200px] md:h-48">
+        <div className="relative w-full h-[110px] mt-10 md:mt-0 z-0">
           <Image
-            src="https://theme.hstatic.net/1000288528/1000382531/14/contact_img.jpg?v=126"
+            src="https://theme.hstatic.net/1000288528/1000382531/14/heading-products.jpg?v=126"
             alt="Product Banner"
             layout="fill"
             objectFit="cover"
             priority
           />
+
           <div className="absolute inset-0 flex items-center justify-center bg-black/30 flex-col px-4">
             <h1 className="text-2xl md:text-4xl font-bold text-white mb-2 md:mb-4">
               Sản Phẩm
             </h1>
+
             <p className="text-sm md:text-lg text-white/90 max-w-2xl text-center">
               Chúng tôi cam kết chất lượng hàng đầu
             </p>
@@ -160,11 +166,11 @@ export default function ProductPage() {
           setMaxPrice={setMaxPrice}
         />
 
-        <div className="flex-1 px-2 md:pl-6 h-full overflow-hidden">
+        <div className="flex-1 px-2 md:pl-6 h-full overflow-hidden pt-5">
           <div className="hidden xl:flex flex-col md:flex-row justify-between items-center mb-4 md:mb-6 pr-2 md:pr-4">
-            <h1 className="text-lg md:text-2xl font-bold mb-2 md:mb-0">
-              Sản phẩm ({filteredProducts.length})
-            </h1>
+            <p className="text-lg md:text-xl font-bold mb-2 md:mb-0">
+              SẢN PHẨM ({filteredProducts.length})
+            </p>
             <div className="flex gap-2">
               <button
                 onClick={() => setViewMode("grid")}
@@ -220,6 +226,7 @@ export default function ProductPage() {
         removeFromCart={removeFromCart}
         deleteFromCart={deleteFromCart}
         totalItems={totalItems}
+        clearCart={() => setCartItems([])}
         totalPrice={totalPrice}
         products={products}
       />

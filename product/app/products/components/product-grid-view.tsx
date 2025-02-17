@@ -2,11 +2,19 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Eye, ShoppingBagIcon } from "lucide-react";
+import { Eye, ShoppingBasket } from "lucide-react";
 import { ProductDto } from "@/types/types";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import PreviewProduct from "./preview-product";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { CoolMode } from "@/components/magicui/cool-mode";
+import { toast } from "sonner";
 
 export const ProductGridView = ({
   products,
@@ -42,7 +50,7 @@ export const ProductGridView = ({
           return (
             <motion.div
               key={product.Id}
-              className="group p-3 md:p-4 rounded-xl hover:border hover:shadow-lg transition-shadow relative"
+              className="group p-3 md:p-4 rounded-xl hover:border hover:shadow-lg transition-shadow relative "
             >
               {product.discountPercentage > 0 && (
                 <div className="absolute top-2 left-2 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-medium z-10">
@@ -50,7 +58,7 @@ export const ProductGridView = ({
                 </div>
               )}
               <div
-                className="relative h-48 mb-4 rounded-lg overflow-hidden group-hover:scale-110"
+                className="relative h-48 mb-4 rounded-lg overflow-hidden group-hover:scale-110 cursor-pointer"
                 onClick={() => {
                   setShowPreview(true);
                   setSelectedProduct(product);
@@ -62,8 +70,8 @@ export const ProductGridView = ({
                       ?.signedUrl || ""
                   }
                   alt={product.title}
-                  layout="fill"
-                  objectFit="contain"
+                  fill
+                  style={{ objectFit: "contain" }}
                 />
                 <div className="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-1 rounded-md text-xs flex items-center gap-1">
                   <Eye className="w-3 h-3" />
@@ -111,13 +119,26 @@ export const ProductGridView = ({
                       +
                     </Button>
                   </div>
-                  <Button
-                    onClick={() => {
-                      addToCart(product, quantity);
-                    }}
-                  >
-                    <ShoppingBagIcon className="w-4 h-4" />
-                  </Button>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <CoolMode>
+                          <Button
+                            onClick={() => {
+                              addToCart(product, quantity);
+                              toast.success("Đã thêm thành công!");
+                            }}
+                            className="bg-[#B10836]"
+                          >
+                            <ShoppingBasket className="w-4 h-4" />
+                          </Button>
+                        </CoolMode>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Thêm vào giỏ hàng</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </div>
               </div>
             </motion.div>
