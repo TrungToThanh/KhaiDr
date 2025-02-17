@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRef } from "react";
 import { useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const products = [
   {
@@ -108,7 +109,11 @@ export default function HotProducts() {
         </motion.div>
       </div>
       <div className="w-full flex justify-center my-10">
-        <Button>XEM THÊM SẢN PHẨM</Button>
+        <Link href={"/products"}>
+          <Button className="bg-[#B10836] hover:scale-125">
+            XEM THÊM SẢN PHẨM
+          </Button>
+        </Link>
       </div>
     </div>
   );
