@@ -44,27 +44,29 @@ function ProductPageContent() {
         categoryList={categoryList}
         isLoading={isLoading}
       />
-      <Dialog open={openSearch} onOpenChange={setOpenSearch}>
-        <DialogTrigger asChild>
-          <div>
-            <PlaceholdersAndVanishInput
-              placeholders={[
-                "Để tôi giúp bạn nhá!",
-                "Sản phẩm nào bạn quan tâm?",
-                "Bạn thích sản phẩm nào!",
-              ]}
+      {openSearch && (
+        <Dialog open={openSearch} onOpenChange={setOpenSearch}>
+          <DialogTrigger asChild>
+            <div>
+              <PlaceholdersAndVanishInput
+                placeholders={[
+                  "Để tôi giúp bạn nhá!",
+                  "Sản phẩm nào bạn quan tâm?",
+                  "Bạn thích sản phẩm nào!",
+                ]}
+              />
+            </div>
+          </DialogTrigger>
+          <DialogContent className="max-w-screen rounded-lg h-screen px-4">
+            <SearchProduct
+              onSubmit={(value) => {
+                setSearchTerm(value);
+                setOpenSearch(false);
+              }}
             />
-          </div>
-        </DialogTrigger>
-        <DialogContent className="max-w-screen rounded-lg h-screen px-4">
-          <SearchProduct
-            onSubmit={(value) => {
-              setSearchTerm(value);
-              setOpenSearch(false);
-            }}
-          />
-        </DialogContent>
-      </Dialog>
+          </DialogContent>
+        </Dialog>
+      )}
     </Suspense>
   );
 }

@@ -10,7 +10,7 @@ type Props = {
 export default function SearchProduct({ onSubmit }: Props) {
   const placeholders = [
     "Để tôi giúp bạn nhá!",
-    "Nói cho tôi biết sản phẩm bạn quan tâm?",
+    "Sản phẩm nào bạn quan tâm?",
     "Bạn thích sản phẩm nào!",
   ];
 

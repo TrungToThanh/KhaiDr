@@ -231,7 +231,7 @@ export default function ProductPageIndex({
               <PlaceholdersAndVanishInput
                 placeholders={[
                   "Để tôi giúp bạn nhá!",
-                  "Nói cho tôi biết sản phẩm bạn quan tâm?",
+                  "Sản phẩm nào bạn quan tâm?",
                   "Bạn thích sản phẩm nào!",
                 ]}
                 onSubmit={(value) => {
