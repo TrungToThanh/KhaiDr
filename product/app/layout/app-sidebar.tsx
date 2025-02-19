@@ -1,6 +1,13 @@
 "use client";
 import * as React from "react";
-import { Phone, Info, Home, ShoppingBag, Menu } from "lucide-react";
+import {
+  Phone,
+  Info,
+  Home,
+  ShoppingBag,
+  Menu,
+  ChevronRightIcon,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -146,10 +153,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <SidebarMenuButton asChild>
                   <a
                     href={item.url}
-                    className="font-bold line-clamp-[50px] py-6 pl-4 hover:scale-110"
+                    className="font-bold line-clamp-[50px] py-6 pl-4 hover:scale-110 flex justify-between "
                   >
-                    <item.icon className="h-5 w-5" />
-                    {item.title}
+                    <span className="flex gap-2 items-center group">
+                      <item.icon className="h-5 w-5" />
+                      {item.title}
+                    </span>
+                    <span className="opacity-0 group-hover:opacity-100">
+                      <ChevronRightIcon />
+                    </span>
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>

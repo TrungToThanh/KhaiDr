@@ -35,10 +35,9 @@ export const MobileFilter = ({
     <>
       <button
         onClick={() => setIsFiltersOpen(!isFiltersOpen)}
-        className="md:hidden mb-4 p-2 bg-blue-100 text-blue-600 rounded-lg flex items-center gap-2 w-full justify-center"
+        className="md:hidden fixed top-32 right-4 -translate-y-1/2 p-3 rounded-full flex items-center justify-center shadow-lg z-50"
       >
-        <Filter className="w-5 h-5" />
-        {isFiltersOpen ? "Ẩn bộ lọc" : "Hiện bộ lọc"}
+        <Filter className="w-4 h-4" />
       </button>
 
       <AnimatePresence>

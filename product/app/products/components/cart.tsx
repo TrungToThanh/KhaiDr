@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { X } from "lucide-react";
-import { PaymentDto, ProductDto } from "@/types/types";
+import { Minus, Plus, Trash2 } from "lucide-react";
+import { CartItem, PaymentDto, ProductDto } from "@/types/types";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
@@ -12,14 +12,11 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/collapsible";
-
-interface CartItem {
-  productId: number;
-  name: string;
-  price: number;
-  quantity: number;
-  imageUrl: string;
-}
+import { SendDataGoogle } from "../hooks/send-data-google";
+import dayjs from "dayjs";
+import { GeneratePaymentCode } from "../hooks/gen-code-product";
+import { Button } from "@/components/ui/button";
+import confetti from "canvas-confetti";
 
 interface ApiResponse {
   Id?: number;
@@ -86,12 +83,34 @@ export default function Cart({
       return;
     }
 
-    const generatePaymentCode = () => {
-      const timestamp = Date.now().toString(); // Lấy timestamp hiện tại
-      return `PAY-${timestamp}`;
-    };
+    const duration = 5 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
-    const paymentCode = generatePaymentCode();
+    const randomInRange = (min: number, max: number) =>
+      Math.random() * (max - min) + min;
+
+    const interval = window.setInterval(() => {
+      const timeLeft = animationEnd - Date.now();
+
+      if (timeLeft <= 0) {
+        return clearInterval(interval);
+      }
+
+      const particleCount = 50 * (timeLeft / duration);
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+      });
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+      });
+    }, 250);
+
+    const paymentCode = GeneratePaymentCode();
 
     const orderData: PaymentDto[] = cartItems.map((item) => ({
       Code: paymentCode,
@@ -104,17 +123,21 @@ export default function Cart({
       UserPhone: customerInfo.phone,
       UserAddress: customerInfo.address,
       Note: customerInfo.note,
+      Category: item.category,
+      Date: dayjs().format("DD/MM/YYYY").toString(),
+      Time: dayjs().format("HH:mm").toString(),
     }));
     const results = [];
 
-    for (const item of orderData) {
-      const result = await createRecord(item);
+    for (const product of orderData) {
+      SendDataGoogle("Mua_hàng", product.Category, product.ProductName);
+      const result = await createRecord(product);
       results.push(result);
     }
 
     if (results.every((res) => res.Id)) {
       toast.success("Đặt hàng thành công!");
-      setCustomerInfo({ name: "", phone: "", address: "", note: "" });
+      // setCustomerInfo({ name: "", phone: "", address: "", note: "" });
       clearCart(); // Xóa toàn bộ giỏ hàng
       setShowCart(false);
     } else {
@@ -200,17 +223,19 @@ export default function Cart({
                                   </p>
                                   <div className="flex items-center gap-2 mt-1">
                                     <button
+                                      type="button"
                                       onClick={() =>
                                         removeFromCart(item.productId)
                                       }
                                       className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 text-sm"
                                     >
-                                      -
+                                      <Minus className="!size-3" />
                                     </button>
                                     <span className="w-6 text-center text-sm">
                                       {item.quantity}
                                     </span>
                                     <button
+                                      type="button"
                                       onClick={() =>
                                         addToCart(
                                           products.find(
@@ -221,7 +246,7 @@ export default function Cart({
                                       }
                                       className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 text-sm"
                                     >
-                                      +
+                                      <Plus className="!size-3" />
                                     </button>
                                   </div>
                                 </div>
@@ -230,7 +255,7 @@ export default function Cart({
                                 onClick={() => deleteFromCart(item.productId)}
                                 className="p-1 hover:text-red-600 flex-shrink-0"
                               >
-                                <X className="w-5 h-5" />
+                                <Trash2 />
                               </button>
                             </div>
                           ))}
@@ -332,26 +357,25 @@ export default function Cart({
                     </div>
                   </CollapsibleContent>
                 </Collapsible>
-
-                <div className="sticky !bottom-0 bg-white pt-4 border-t mt-2">
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="font-semibold">Tổng tiền:</span>
-                    <span className="text-lg font-bold text-red-600">
-                      {totalPrice.toLocaleString()}₫
-                    </span>
-                  </div>
-                  {totalItems > 0 && (
-                    <button
-                      type="submit"
-                      className="w-full bg-[#B10836] text-white py-1 rounded-lg hover:scale-105 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                      onClick={handleOrderSubmit}
-                      disabled={!isFormValid}
-                    >
-                      Đặt hàng
-                    </button>
-                  )}
-                </div>
               </form>
+
+              <div className="sticky !bottom-0 bg-white pt-4 border-t mt-2">
+                <div className="flex justify-between items-center mb-4">
+                  <span className="font-semibold">Tổng tiền:</span>
+                  <span className="text-lg font-bold text-red-600">
+                    {totalPrice.toLocaleString()}₫
+                  </span>
+                </div>
+                {totalItems > 0 && (
+                  <Button
+                    className="w-full bg-[#B10836] text-white py-1 rounded-lg hover:scale-105 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={handleOrderSubmit}
+                    disabled={!isFormValid}
+                  >
+                    Đặt hàng
+                  </Button>
+                )}
+              </div>
             </div>
           </motion.div>
         </div>

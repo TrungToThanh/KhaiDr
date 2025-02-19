@@ -5,8 +5,11 @@ import { Button } from "@/components/ui/button";
 import {
   FacebookIcon,
   MessageCircle,
-  ShoppingBagIcon,
+  Minus,
+  Plus,
+  ShoppingBasket,
   TwitterIcon,
+  X,
 } from "lucide-react";
 import { useState } from "react";
 import { Dock, DockIcon } from "@/components/magicui/dock";
@@ -14,6 +17,7 @@ import { Lens } from "@/components/magicui/lens";
 import { Meteors } from "@/components/magicui/meteors";
 import { CoolMode } from "@/components/magicui/cool-mode";
 import { toast } from "sonner";
+import { motion } from "framer-motion";
 
 interface PreviewProductProps {
   product: ProductDto;
@@ -36,7 +40,13 @@ export default function PreviewProduct({
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent className="w-screen h-screen  max-w-screen p-0 md:p-6 overflow-auto rounded-none md:rounded-lg">
+      <DialogContent className="w-screen h-screen max-w-screen p-0 md:p-6 overflow-x-hidden overflow-y-auto rounded-none md:rounded-lg">
+        <button
+          onClick={onClose}
+          className="md:hidden fixed top-4 right-4 z-[100] bg-white rounded-full p-2 shadow-lg"
+        >
+          <X className="w-6 h-6 text-[#898989]" />
+        </button>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-y-8 md:gap-6 w-full md:w-3/4 h-full px-4 md:px-0 items-center justify-center mx-auto">
           <Meteors className="z-50" number={100} />
 
@@ -92,7 +102,17 @@ export default function PreviewProduct({
                   }
                   className="gap-2 w-fit bg-[#B10836]"
                 >
-                  <ShoppingBagIcon className="w-4 h-4" />
+                  <motion.button
+                    animate={{ scale: [1, 1.5, 1] }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                    className="flex gap-2"
+                  >
+                    <ShoppingBasket className="w-4 h-4" />
+                  </motion.button>
                   <span className="hidden xs:inline ">Thêm vào giỏ</span>
                 </Button>
               </div>
@@ -114,7 +134,7 @@ export default function PreviewProduct({
                       )
                     }
                   >
-                    -
+                    <Minus className="!size-3" />
                   </Button>
                   <span className="px-2 w-8 text-center">
                     {quantities[product.Id] || 1}
@@ -126,7 +146,7 @@ export default function PreviewProduct({
                       handleQuantityChange(product.Id, selectedItem);
                     }}
                   >
-                    +
+                    <Plus className="!size-3" />
                   </Button>
                 </div>
                 <CoolMode>
@@ -137,8 +157,18 @@ export default function PreviewProduct({
                     }}
                     className="gap-2 w-fit bg-[#B10836]"
                   >
-                    <ShoppingBagIcon className="w-4 h-4" />
-                    Thêm vào giỏ hàng
+                    <motion.button
+                      animate={{ scale: [1, 1.5, 1] }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                      className="flex gap-2"
+                    >
+                      <ShoppingBasket className="w-4 h-4" />
+                    </motion.button>
+                    <span>Thêm vào giỏ</span>
                   </Button>
                 </CoolMode>
               </div>
@@ -149,7 +179,7 @@ export default function PreviewProduct({
             </p>
           </div>
         </div>
-        <div className="relative">
+        <div className="relative mb-20">
           <Dock direction="middle">
             <DockIcon>
               <FacebookIcon />

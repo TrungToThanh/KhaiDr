@@ -1,27 +1,12 @@
-"use client";
-import React from "react";
+import { Metadata } from "next";
+import LandingScreen from "./screen";
 
-import HotProducts from "./components/hot-products";
-import Hero from "./components/hero";
-import TrendingProducts from "./components/trending-products";
-import ProductSection from "./components/category-products";
-import ExpertReviewSlider from "./components/expert";
-import Footer from "../layout/footer";
+export const metadata: Metadata = {
+  title: "Trang chủ",
+  description:
+    "Khám phá các sản phẩm mỹ phẩm cao cấp tại cửa hàng của chúng tôi.",
+};
 
 export default function Landing() {
-  return (
-    <div className="min-h-screen flex flex-col items-center w-full">
-      <Hero />
-
-      <ProductSection />
-
-      <TrendingProducts />
-
-      <HotProducts />
-
-      <ExpertReviewSlider />
-
-      <Footer />
-    </div>
-  );
+  return <LandingScreen />;
 }

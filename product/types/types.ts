@@ -21,7 +21,7 @@ export type ProductDto = {
   title: string;
   price: number;
   originalPrice: number;
-  discountPercentage: number;
+  showDiscountPercentage: "Show" | "Hide";
   brand: string;
   category: string;
   stock: number;
@@ -33,6 +33,7 @@ export type ProductDto = {
 
 export interface CartItem {
   productId: number;
+  category: string;
   name: string;
   price: number;
   quantity: number;
@@ -55,4 +56,7 @@ export type PaymentDto = {
   UserPhone: string;
   UserAddress: string;
   Note: string;
+  Category: string;
+  Date: string;
+  Time: string;
 };

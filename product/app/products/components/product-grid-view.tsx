@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Eye, ShoppingBasket } from "lucide-react";
+import { Eye, Minus, MoveDown, Plus, ShoppingBasket } from "lucide-react";
 import { ProductDto } from "@/types/types";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/tooltip";
 import { CoolMode } from "@/components/magicui/cool-mode";
 import { toast } from "sonner";
+import { SendDataGoogle } from "../hooks/send-data-google";
+import { PulsatingButton } from "@/components/magicui/pulsating-button";
 
 export const ProductGridView = ({
   products,
@@ -46,15 +48,32 @@ export const ProductGridView = ({
       >
         {products.map((product) => {
           const quantity = quantities[product.Id] || 1;
+          const percentWord = `${(
+            ((product.originalPrice - product.price) / product.originalPrice) *
+            100
+          ).toFixed(0)}%`;
 
           return (
             <motion.div
               key={product.Id}
               className="group p-3 md:p-4 rounded-xl hover:border hover:shadow-lg transition-shadow relative "
+              onMouseLeave={() =>
+                SendDataGoogle("Xem", product.category, product.title)
+              }
+              onClick={() =>
+                SendDataGoogle("Xem_chi_tiết", product.category, product.title)
+              }
             >
-              {product.discountPercentage > 0 && (
-                <div className="absolute top-2 left-2 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-medium z-10">
-                  -{product.discountPercentage}%
+              {product.showDiscountPercentage === "Show" && (
+                <div className="absolute top-2 left-2 text-white px-3 py-1 rounded-full text-sm font-medium z-10">
+                  <PulsatingButton
+                    pulseColor="red"
+                    className="bg-red-500 font-bold flex"
+                  >
+                    <span className="flex">
+                      <MoveDown className="size-3" /> {percentWord}{" "}
+                    </span>
+                  </PulsatingButton>
                 </div>
               )}
               <div
@@ -86,7 +105,7 @@ export const ProductGridView = ({
               <div className="flex justify-between items-center mt-2 md:mt-4">
                 <div>
                   <div className="flex flex-col items-baseline gap-2">
-                    {product.discountPercentage > 0 && (
+                    {product.showDiscountPercentage === "Show" && (
                       <span className="text-sm text-gray-500 line-through">
                         {product.originalPrice.toLocaleString()}₫
                       </span>
@@ -105,7 +124,7 @@ export const ProductGridView = ({
                       }
                       className=" hover:bg-gray-200 "
                     >
-                      -
+                      <Minus className="!size-3" />
                     </Button>
                     <span className="px-2 w-8 text-center">{quantity}</span>
                     <Button
@@ -116,7 +135,7 @@ export const ProductGridView = ({
                       }}
                       className="hover:bg-gray-200"
                     >
-                      +
+                      <Plus className="!size-3" />
                     </Button>
                   </div>
                   <TooltipProvider>
@@ -126,11 +145,26 @@ export const ProductGridView = ({
                           <Button
                             onClick={() => {
                               addToCart(product, quantity);
+                              SendDataGoogle(
+                                "Thêm_vào_giỏ_hàng",
+                                product.category,
+                                product.title
+                              );
                               toast.success("Đã thêm thành công!");
                             }}
                             className="bg-[#B10836]"
                           >
-                            <ShoppingBasket className="w-4 h-4" />
+                            <motion.button
+                              animate={{ scale: [1, 1.5, 1] }}
+                              transition={{
+                                duration: 2,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                              }}
+                              className="flex gap-2"
+                            >
+                              <ShoppingBasket className="w-4 h-4" />
+                            </motion.button>
                           </Button>
                         </CoolMode>
                       </TooltipTrigger>
