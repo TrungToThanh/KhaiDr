@@ -7,6 +7,7 @@ import {
   ShoppingBag,
   Menu,
   ChevronRightIcon,
+  Search,
 } from "lucide-react";
 
 import {
@@ -56,6 +57,12 @@ const menuItems = {
       title: "LIÊN HỆ",
       url: "contact",
       icon: Phone,
+      items: [],
+    },
+    {
+      title: "TÌM KIẾM",
+      url: "products?search",
+      icon: Search,
       items: [],
     },
   ],

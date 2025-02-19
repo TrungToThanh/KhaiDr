@@ -4,17 +4,25 @@ import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Grid, List } from "lucide-react";
-import Cart from "../components/cart";
-import { useGetProduct } from "../hooks/get";
-import { ProductGridView } from "../components/product-grid-view";
-import { ProductListView } from "../components/product-list-view";
-import { Payment } from "../components/payment";
-import { DesktopFilter } from "../components/desktop-filter";
-import { MobileFilter } from "../components/mobile-filter";
+import dynamic from "next/dynamic";
+import Cart from "./cart";
+import { ProductGridView } from "./product-grid-view";
+import { ProductListView } from "./product-list-view";
+import { Payment } from "./payment";
+import { DesktopFilter } from "./desktop-filter";
+import { MobileFilter } from "./mobile-filter";
 import { CartItem, CategoryListDto, ProductDto } from "@/types/types";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Skeleton } from "@/components/ui/skeleton";
 import Footer from "@/app/layout/footer";
+
+const PlaceholdersAndVanishInput = dynamic(
+  () =>
+    import("@/components/placeholders-and-vanish-input").then(
+      (mod) => mod.PlaceholdersAndVanishInput
+    ),
+  { ssr: false }
+);
 
 declare global {
   interface Window {
@@ -26,9 +34,21 @@ declare global {
   }
 }
 
-export default function ProductPageScreen() {
-  const { products, brands, categoryList, maxPrice, isLoading } =
-    useGetProduct();
+type Props = {
+  products: ProductDto[];
+  brands: string[];
+  maxPrice: number;
+  categoryList: CategoryListDto[];
+  isLoading: boolean;
+};
+
+export default function ProductPageIndex({
+  products,
+  brands,
+  categoryList,
+  maxPrice,
+  isLoading,
+}: Props) {
   const isMobile = useIsMobile();
 
   const [selectedCategories, setSelectedCategories] = useState<
@@ -39,6 +59,7 @@ export default function ProductPageScreen() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [showCart, setShowCart] = useState(false);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
     if (maxPrice) setMaxPrice(maxPrice);
@@ -51,6 +72,10 @@ export default function ProductPageScreen() {
   const filteredProducts = useMemo(() => {
     return (
       products?.filter((product) => {
+        const matchesSearch = product.title
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
+
         const matchesCategory =
           selectedCategories.length === 0 ||
           selectedCategories.some(
@@ -67,10 +92,16 @@ export default function ProductPageScreen() {
 
         const matchesPrice = product.price <= maxPriceFilter;
 
-        return matchesCategory && matchesBrand && matchesPrice;
+        return matchesSearch && matchesCategory && matchesBrand && matchesPrice;
       }) ?? []
     );
-  }, [products, selectedCategories, selectedBrands, maxPriceFilter]);
+  }, [
+    products,
+    selectedCategories,
+    selectedBrands,
+    maxPriceFilter,
+    searchTerm,
+  ]);
 
   const addToCart = (product: ProductDto, quality: number) => {
     setCartItems((prev) => {
@@ -164,6 +195,20 @@ export default function ProductPageScreen() {
           setMaxPrice={setMaxPrice}
         />
 
+        {/* Mobile Search */}
+        <div className="xl:hidden mb-4 mt-4 px-2 z-20">
+          <PlaceholdersAndVanishInput
+            placeholders={[
+              "Để tôi giúp bạn nhá!",
+              "Sản phẩm nào bạn quan tâm?",
+              "Bạn thích sản phẩm nào!",
+            ]}
+            onSubmit={(value) => {
+              setSearchTerm(value);
+            }}
+          />
+        </div>
+
         {/* Desktop */}
         <DesktopFilter
           categoryList={categoryList}
@@ -182,6 +227,19 @@ export default function ProductPageScreen() {
             <p className="text-lg md:text-xl font-bold mb-2 md:mb-0">
               SẢN PHẨM ({filteredProducts.length})
             </p>
+            <div>
+              <PlaceholdersAndVanishInput
+                placeholders={[
+                  "Để tôi giúp bạn nhá!",
+                  "Nói cho tôi biết sản phẩm bạn quan tâm?",
+                  "Bạn thích sản phẩm nào!",
+                ]}
+                onSubmit={(value) => {
+                  setSearchTerm(value);
+                }}
+              />
+            </div>
+
             <div className="flex gap-2">
               <button
                 onClick={() => setViewMode("grid")}

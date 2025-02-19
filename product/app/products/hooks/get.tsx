@@ -46,5 +46,12 @@ export const useGetProduct = () => {
 
   const maxPrice = Math.max(...products.map((p) => p.price || 0), 0);
 
-  return { products, categories, categoryList, brands, maxPrice, isLoading };
+  return {
+    productServer: products,
+    categories,
+    categoryList,
+    brands,
+    maxPrice,
+    isLoading,
+  };
 };

@@ -1,6 +1,5 @@
 import { Metadata } from "next";
-
-import ProductPageScreen from "./screen/page";
+import ProductPageScreen from "./screen";
 
 export const metadata: Metadata = {
   title: "Sản phẩm",

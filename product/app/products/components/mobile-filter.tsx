@@ -35,9 +35,9 @@ export const MobileFilter = ({
     <>
       <button
         onClick={() => setIsFiltersOpen(!isFiltersOpen)}
-        className="md:hidden fixed top-32 right-4 -translate-y-1/2 p-3 rounded-full flex items-center justify-center shadow-lg z-50"
+        className="md:hidden fixed top-32 right-4 -translate-y-1/2 p-3 rounded-full flex items-center justify-center shadow-lg z-50 bg-white"
       >
-        <Filter className="w-4 h-4" />
+        <Filter className="w-3 h-3" />
       </button>
 
       <AnimatePresence>
