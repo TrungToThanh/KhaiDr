@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import Script from "next/script";
 import { CartProvider } from "@/context/cart-context";
+import { Analytics } from "@vercel/analytics/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,7 +47,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Toaster position="top-center" richColors />
-        <CartProvider>{children}</CartProvider>
+        <CartProvider>
+          {children} <Analytics />
+        </CartProvider>
       </body>
     </html>
   );
