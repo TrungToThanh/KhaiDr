@@ -1,6 +1,5 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
@@ -8,6 +7,8 @@ import { motion } from "framer-motion";
 
 import axios from "axios";
 import { BorderBeam } from "@/components/magicui/border-beam";
+import { PulsatingButton } from "@/components/magicui/pulsating-button";
+import { toast } from "sonner";
 
 interface ContactFormData {
   Name: string;
@@ -54,10 +55,12 @@ export default function ContactUsScreen() {
 
     const result = await createRecord(data);
     if (result?.Id) {
-      alert("Tin nhắn đã được gửi thành công!");
+      toast.success(
+        "Tin nhắn đã được gửi thành công! Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất."
+      );
       (e.target as HTMLFormElement).reset();
     } else {
-      alert(result.msg || "Có lỗi xảy ra khi gửi tin nhắn");
+      toast.warning(result.msg || "Có lỗi xảy ra khi gửi tin nhắn");
       (e.target as HTMLFormElement).reset();
     }
   };
@@ -110,9 +113,9 @@ export default function ContactUsScreen() {
                 placeholder="Nội dung tin nhắn"
                 required
               />
-              <Button type="submit" className="w-full bg-[#B10836]">
+              <PulsatingButton className="bg-[#B10836]" pulseColor="#B10836">
                 Gửi Tin Nhắn
-              </Button>
+              </PulsatingButton>
             </form>
           </CardContent>
           <BorderBeam duration={8} size={100} />

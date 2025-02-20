@@ -1,6 +1,7 @@
 import useSWR from "swr";
 import { fetcher } from "@/configs/axios";
 import { CategoryListDto, ProductDto } from "@/types/types";
+import { generateSlug } from "../utils/gen-slug";
 
 export const useGetProduct = () => {
   const { data, isLoading } = useSWR(
@@ -13,7 +14,12 @@ export const useGetProduct = () => {
     }
   );
 
-  const products: ProductDto[] = data?.list || [];
+  const products: ProductDto[] = (data?.list || []).map(
+    (product: ProductDto) => ({
+      ...product,
+      slug: generateSlug(product.title),
+    })
+  );
 
   const categories: string[] = [
     ...new Set(

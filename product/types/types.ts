@@ -29,6 +29,7 @@ export type ProductDto = {
   viewers: number;
   description: string;
   imageUrl: ProductImage[];
+  slug?: string;
 };
 
 export interface CartItem {

@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Minus, Plus, Trash2 } from "lucide-react";
-import { CartItem, PaymentDto, ProductDto } from "@/types/types";
+import { PaymentDto, ProductDto } from "@/types/types";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
@@ -12,11 +12,12 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/collapsible";
-import { SendDataGoogle } from "../hooks/send-data-google";
+import { SendDataGoogle } from "../utils/send-data-google";
 import dayjs from "dayjs";
-import { GeneratePaymentCode } from "../hooks/gen-code-product";
+import { GeneratePaymentCode } from "../utils/gen-code-product";
 import { Button } from "@/components/ui/button";
 import confetti from "canvas-confetti";
+import { useCart } from "../../../context/cart-context";
 
 interface ApiResponse {
   Id?: number;
@@ -45,26 +46,14 @@ async function createRecord(data: PaymentDto): Promise<ApiResponse> {
 export default function Cart({
   showCart,
   setShowCart,
-  cartItems,
-  addToCart,
-  removeFromCart,
-  deleteFromCart,
-  clearCart,
-  totalItems,
-  totalPrice,
   products,
 }: {
   showCart: boolean;
   setShowCart: (show: boolean) => void;
-  cartItems: CartItem[];
-  addToCart: (product: ProductDto, quantity: number) => void;
-  removeFromCart: (productId: number) => void;
-  deleteFromCart: (productId: number) => void;
-  clearCart: () => void;
-  totalPrice: number;
-  totalItems: number;
   products: ProductDto[];
 }) {
+  const { cartItems, addToCart, clearCart, removeFromCart, deleteFromCart } =
+    useCart();
   const [isCustomerOpen, setIsCustomerOpen] = useState(false);
   const [isProductsOpen, setIsProductsOpen] = useState(true);
   const [customerInfo, setCustomerInfo] = useState({
@@ -144,6 +133,13 @@ export default function Cart({
       toast.error("Có lỗi xảy ra khi đặt hàng, vui lòng thử lại");
     }
   };
+
+  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const totalPrice = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+
   return (
     <>
       {showCart && (

@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRef } from "react";
 import { useInView } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { PulsatingButton } from "@/components/magicui/pulsating-button";
 
 const products = [
   {
@@ -110,9 +110,9 @@ export default function HotProducts() {
       </div>
       <div className="w-full flex justify-center my-10">
         <Link href={"/products"}>
-          <Button className="bg-[#B10836] hover:scale-125">
+          <PulsatingButton className="bg-[#B10836]" pulseColor="#B10836">
             XEM THÊM SẢN PHẨM
-          </Button>
+          </PulsatingButton>
         </Link>
       </div>
     </div>

@@ -1,6 +1,5 @@
 "use client";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { TrendingUp, Star } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -10,6 +9,7 @@ import image1 from "@/public/contact-us/Image1.png";
 import { BorderBeam } from "@/components/magicui/border-beam";
 import { AnimatedTooltip } from "@/components/animated-tooltip";
 import Link from "next/link";
+import { PulsatingButton } from "@/components/magicui/pulsating-button";
 
 const people = [
   {
@@ -154,19 +154,9 @@ const AboutUsScreen = () => {
         >
           {/* Button */}
           <Link href="/contact">
-            <Button className="bg-[#b10836] hover:bg-orange-600 text-white px-6 py-3 rounded-lg shadow-lg transition duration-300 transform hover:scale-105 text-sm md:text-base">
+            <PulsatingButton className="bg-[#B10836]" pulseColor="#B10836">
               LIÊN HỆ NGAY
-              <BorderBeam
-                size={40}
-                initialOffset={20}
-                className="from-transparent via-orange-600 to-transparent"
-                transition={{
-                  type: "spring",
-                  stiffness: 60,
-                  damping: 20,
-                }}
-              />
-            </Button>
+            </PulsatingButton>
           </Link>
         </motion.div>
       </motion.div>

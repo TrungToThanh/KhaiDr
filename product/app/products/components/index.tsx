@@ -11,7 +11,7 @@ import { ProductListView } from "./product-list-view";
 import { Payment } from "./payment";
 import { DesktopFilter } from "./desktop-filter";
 import { MobileFilter } from "./mobile-filter";
-import { CartItem, CategoryListDto, ProductDto } from "@/types/types";
+import { CategoryListDto, ProductDto } from "@/types/types";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Skeleton } from "@/components/ui/skeleton";
 import Footer from "@/app/layout/footer";
@@ -50,14 +50,12 @@ export default function ProductPageIndex({
   isLoading,
 }: Props) {
   const isMobile = useIsMobile();
-
   const [selectedCategories, setSelectedCategories] = useState<
     CategoryListDto[]
   >([]);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [maxPriceFilter, setMaxPrice] = useState<number>(0);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [showCart, setShowCart] = useState(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -102,52 +100,6 @@ export default function ProductPageIndex({
     maxPriceFilter,
     searchTerm,
   ]);
-
-  const addToCart = (product: ProductDto, quality: number) => {
-    setCartItems((prev) => {
-      const existing = prev.find((item) => item.productId === product.Id);
-      if (existing) {
-        return prev.map((item) =>
-          item.productId === product.Id
-            ? { ...item, quantity: item.quantity + quality }
-            : item
-        );
-      }
-      return [
-        ...prev,
-        {
-          productId: product.Id,
-          category: product.category,
-          name: product.title,
-          price: product.price,
-          quantity: quality,
-          imageUrl: product.imageUrl[0].thumbnails?.card_cover?.signedUrl || "",
-        },
-      ];
-    });
-  };
-
-  const removeFromCart = (productId: number) => {
-    setCartItems((prev) =>
-      prev
-        .map((item) =>
-          item.productId === productId
-            ? { ...item, quantity: Math.max(0, item.quantity - 1) }
-            : item
-        )
-        .filter((item) => item.quantity > 0)
-    );
-  };
-
-  const deleteFromCart = (productId: number) => {
-    setCartItems((prev) => prev.filter((item) => item.productId !== productId));
-  };
-
-  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
 
   if (isLoading) return <Skeleton />;
 
@@ -267,38 +219,16 @@ export default function ProductPageIndex({
           </div>
 
           {viewMode === "grid" ? (
-            <ProductGridView
-              products={filteredProducts}
-              addToCart={addToCart}
-            />
+            <ProductGridView products={filteredProducts} />
           ) : (
-            <ProductListView
-              products={filteredProducts}
-              addToCart={addToCart}
-            />
+            <ProductListView products={filteredProducts} />
           )}
         </div>
       </div>
 
       <Footer />
-      <Payment
-        totalItems={totalItems}
-        showCart={showCart}
-        setShowCart={setShowCart}
-      />
-
-      <Cart
-        showCart={showCart}
-        setShowCart={setShowCart}
-        cartItems={cartItems}
-        addToCart={addToCart}
-        removeFromCart={removeFromCart}
-        deleteFromCart={deleteFromCart}
-        totalItems={totalItems}
-        clearCart={() => setCartItems([])}
-        totalPrice={totalPrice}
-        products={products}
-      />
+      <Payment showCart={showCart} setShowCart={setShowCart} />
+      <Cart showCart={showCart} setShowCart={setShowCart} products={products} />
     </div>
   );
 }

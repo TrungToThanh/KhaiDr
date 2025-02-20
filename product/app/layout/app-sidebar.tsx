@@ -61,7 +61,7 @@ const menuItems = {
     },
     {
       title: "TÌM KIẾM",
-      url: "products?search",
+      url: "search",
       icon: Search,
       items: [],
     },

@@ -5,18 +5,17 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { ShoppingBagIcon } from "lucide-react";
+import { useCart } from "../../../context/cart-context";
 
 interface PaymentProps {
   showCart: boolean;
-  totalItems: number;
   setShowCart: (value: boolean) => void;
 }
 
-export const Payment: React.FC<PaymentProps> = ({
-  showCart,
-  totalItems,
-  setShowCart,
-}) => {
+export const Payment: React.FC<PaymentProps> = ({ showCart, setShowCart }) => {
+  const { cartItems } = useCart();
+  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
   return (
     <>
       <div className="fixed top-4 right-4 z-30">
