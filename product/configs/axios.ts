@@ -4,7 +4,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL: "https://app.nocodb.com/api/v2/",
   headers: {
-    "xc-token": "InXY1PLrLXDfXW0BRbCNhxDmzGwAGyGa2_Ys_TJG", // Use env variable
+    "xc-token": process.env.NEXT_PUBLIC_NC_TOKEN, // Use env variable
     "Content-Type": "application/json",
   },
 });
