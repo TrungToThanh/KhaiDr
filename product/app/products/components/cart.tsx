@@ -27,7 +27,7 @@ interface ApiResponse {
 async function createRecord(data: PaymentDto): Promise<ApiResponse> {
   try {
     const response = await axios.post<ApiResponse>(
-      "https://app.nocodb.com/api/v2/tables/mevmgt6fob8jpka/records",
+      "https://app.nocodb.com/api/v2/tables/mcnkrxzn926gxee/records",
       data,
       {
         headers: {

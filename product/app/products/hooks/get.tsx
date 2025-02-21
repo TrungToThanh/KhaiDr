@@ -5,7 +5,7 @@ import { generateSlug } from "../utils/gen-slug";
 
 export const useGetProduct = () => {
   const { data, isLoading } = useSWR(
-    "/tables/mf1i2sltvkvrua2/records",
+    "/tables/mqmh83lftu2un2b/records",
     fetcher,
     {
       revalidateIfStale: false,

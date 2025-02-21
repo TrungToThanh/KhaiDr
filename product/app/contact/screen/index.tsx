@@ -25,7 +25,7 @@ interface ApiResponse {
 async function createRecord(data: ContactFormData): Promise<ApiResponse> {
   try {
     const response = await axios.post<ApiResponse>(
-      "https://app.nocodb.com/api/v2/tables/mytx5n97efusyct/records",
+      "https://app.nocodb.com/api/v2/tables/mapg3am19j5af3a/records",
       data,
       {
         headers: {

@@ -28,18 +28,18 @@ export default function RootLayout({
         {/* Google Analytics */}
         <Script
           async
-          src="https://www.googletagmanager.com/gtag/js?id=G-W7928NW4LX"
+          src="https://www.googletagmanager.com/gtag/js?id=G-3P4BVEMFJL"
         />
         <Script id="google-analytics">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-W7928NW4LX');
+            gtag('config', 'G-3P4BVEMFJL');
           `}
         </Script>
         {/* Microsoft Clarity Tracking Code */}
-        <Script
+        {/* <Script
           id="clarity-script"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
@@ -49,7 +49,7 @@ export default function RootLayout({
               y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
           })(window, document, "clarity", "script", "qcr8xcpyw8");`,
           }}
-        />
+        /> */}
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
