@@ -22,7 +22,7 @@ export default function GoToTopButton() {
   return (
     <Button
       onClick={scrollToTop}
-      className={`fixed bottom-6 right-6 rounded-full p-2 bg-gray-800 text-white shadow-lg transition-opacity ${
+      className={`fixed top-1/2 right-6 transform -translate-y-1/2 rounded-full p-2 bg-gray-800 text-white shadow-lg transition-opacity ${
         isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
       size="icon"

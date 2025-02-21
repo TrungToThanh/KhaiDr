@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import Script from "next/script";
 import { CartProvider } from "@/context/cart-context";
 import { Analytics } from "@vercel/analytics/react";
+import TawkToChat from "@/components/chatting";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,11 +16,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
-// export const metadata: Metadata = {
-//   title: "Thương hiệu mỹ phẩm",
-//   description: "Thương hiệu mỹ phẩm",
-// };
 
 export default function RootLayout({
   children,
@@ -59,6 +55,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Toaster position="top-center" richColors />
+        <TawkToChat />
         <CartProvider>
           {children} <Analytics />
         </CartProvider>

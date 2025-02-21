@@ -12,15 +12,13 @@ function ProductPageContent() {
   if (isLoading) return <Skeleton />;
 
   return (
-    <Suspense fallback={<Skeleton />}>
-      <ProductPageIndex
-        products={productServer}
-        brands={brands}
-        maxPrice={maxPrice}
-        categoryList={categoryList}
-        isLoading={isLoading}
-      />
-    </Suspense>
+    <ProductPageIndex
+      products={productServer}
+      brands={brands}
+      maxPrice={maxPrice}
+      categoryList={categoryList}
+      isLoading={isLoading}
+    />
   );
 }
 

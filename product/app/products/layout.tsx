@@ -8,7 +8,7 @@ export default function ProductLayout({
 }) {
   return (
     <CartProvider>
-      <ProductProvider>{children}</ProductProvider>;
+      <ProductProvider>{children}</ProductProvider>
     </CartProvider>
   );
 }
