@@ -1,11 +1,11 @@
 "use client";
 
-import { CartItem, ProductDto } from "@/types/types";
+import { OrderDetail, ProductKiotViet } from "@/app/products/types/kiotviet";
 import { createContext, useContext, useState, useEffect } from "react";
 
 type CartContextType = {
-  cartItems: CartItem[];
-  addToCart: (product: ProductDto, quantity: number) => void;
+  cartItems: OrderDetail[];
+  addToCart: (product: ProductKiotViet, quantity: number) => void;
   removeFromCart: (productId: number) => void;
   clearCart: () => void;
   deleteFromCart: (productId: number) => void;
@@ -14,7 +14,7 @@ type CartContextType = {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [cart, setCart] = useState<CartItem[]>(() => {
+  const [cart, setCart] = useState<OrderDetail[]>(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("cart");
       return saved ? JSON.parse(saved) : [];
@@ -26,25 +26,28 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-  const addToCart = (product: ProductDto, quantity: number) => {
+  const addToCart = (product: ProductKiotViet, quantity: number) => {
     setCart((prev) => {
-      const existing = prev.find((item) => item.productId === product.Id);
+      const existing = prev.find((item) => item.productId === product.id);
       if (existing) {
         return prev.map((item) =>
-          item.productId === product.Id
+          item.productId === product.id
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       }
       return [
-        ...prev,
         {
-          productId: product.Id,
-          category: product.category,
-          name: product.title,
-          price: product.price,
+          productId: product.id,
+          productCode: product.code,
+          productName: product.name,
+          isMaster: true,
           quantity: quantity,
-          imageUrl: product.imageUrl[0].thumbnails?.card_cover?.signedUrl || "",
+          price: product.basePrice,
+          discount: 0,
+          discountRatio: 0,
+          note: "",
+          image: product.images?.at(0),
         },
       ];
     });

@@ -1,30 +1,24 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
-import { CategoryListDto } from "@/types/types";
 import { motion } from "framer-motion";
-import { Store, Tag, ListCheck } from "lucide-react";
+import { Tag, ListCheck } from "lucide-react";
+import { CategoryKiotViet } from "../types/kiotviet";
 
 export type Props = {
-  categoryList: CategoryListDto[];
-  brands: string[];
-  selectedCategories: CategoryListDto[];
-  selectedBrands: string[];
+  categories: CategoryKiotViet[];
+  selectedCategories: CategoryKiotViet[];
   maxPrice: number;
   maxPriceFilter: number;
-  setSelectedCategories: (categories: CategoryListDto[]) => void;
-  setSelectedBrands: (brands: string[]) => void;
+  setSelectedCategories: (categories: CategoryKiotViet[]) => void;
   setMaxPrice: (price: number) => void;
 };
 
 export const DesktopFilter = ({
-  categoryList,
-  brands,
+  categories,
   selectedCategories,
-  selectedBrands,
   maxPrice,
   maxPriceFilter,
   setMaxPrice,
-  setSelectedBrands,
   setSelectedCategories,
 }: Props) => {
   return (
@@ -38,7 +32,7 @@ export const DesktopFilter = ({
           <div className="text-xl font-semibold mb-4 flex items-center gap-2">
             <ListCheck className="w-5 h-5" /> DANH MỤC
           </div>
-          {categoryList.map((category) => (
+          {categories.map((category) => (
             <div
               key={category?.categoryName}
               className="flex items-center mb-2 gap-2 text-sm justify-between"
@@ -60,28 +54,7 @@ export const DesktopFilter = ({
                 />
                 <span>{category?.categoryName}</span>
               </div>
-              <span>({category?.categoryCount})</span>
-            </div>
-          ))}
-
-          <div className="text-xl font-semibold mt-10 mb-4 flex items-center gap-2">
-            <Store className="w-5 h-5" /> THƯƠNG HIỆU
-          </div>
-          {brands.map((brand) => (
-            <div key={brand} className="flex items-center mb-2 gap-2 text-sm">
-              <Checkbox
-                id={brand}
-                onCheckedChange={(checked) => {
-                  if (checked) {
-                    setSelectedBrands([...selectedBrands, brand]);
-                  } else {
-                    setSelectedBrands(
-                      selectedBrands.filter((b) => b !== brand)
-                    );
-                  }
-                }}
-              />
-              <span>{brand}</span>
+              {/* <span>({category?.rank})</span> */}
             </div>
           ))}
 

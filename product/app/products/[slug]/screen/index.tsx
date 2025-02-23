@@ -27,9 +27,9 @@ const ProductDetailScreen = () => {
   const params = useParams();
   const slug = params.slug as string;
   const [quantities, setQuantities] = useState<Record<string, number>>({});
-  const { productServer, isLoading } = useProductContext();
+  const { products, isLoading } = useProductContext();
   const { addToCart } = useCart();
-  const product = productServer.find((p) => p.slug === slug);
+  const product = products.find((p) => p?.slug === slug);
   const router = useRouter();
 
   const handleQuantityChange = (productId: number, newQuantity: number) => {

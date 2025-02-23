@@ -2,18 +2,22 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Eye, Minus, MoveDown, Plus, ShoppingBasket } from "lucide-react";
-import { ProductDto } from "@/types/types";
+import { Minus, Plus, ShoppingBasket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { toast } from "sonner";
 import { CoolMode } from "@/components/magicui/cool-mode";
-import { SendDataGoogle } from "../utils/send-data-google";
-import { PulsatingButton } from "@/components/magicui/pulsating-button";
+// import { SendDataGoogle } from "../utils/send-data-google";
+// import { PulsatingButton } from "@/components/magicui/pulsating-button";
 import { useCart } from "../../../context/cart-context";
 import Link from "next/link";
+import { ProductKiotViet } from "../types/kiotviet";
 
-export const ProductListView = ({ products }: { products: ProductDto[] }) => {
+export const ProductListView = ({
+  products,
+}: {
+  products: ProductKiotViet[];
+}) => {
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const { addToCart } = useCart();
 
@@ -28,32 +32,33 @@ export const ProductListView = ({ products }: { products: ProductDto[] }) => {
     <>
       <motion.div key="list-view" className="grid grid-cols-1 gap-4 p-4">
         {products.map((product) => {
-          const quantity = quantities[product.Id] || 1;
-          const percentWord = `${(
-            ((product.originalPrice - product.price) / product.originalPrice) *
-            100
-          ).toFixed(0)}%`;
+          const quantity = quantities[product.id] || 1;
+          // const percentWord = `${(
+          //   ((product.originalPrice - product.price) / product.originalPrice) *
+          //   100
+          // ).toFixed(0)}%`;
           return (
             <Link
-              href={`products/${product.slug || ""}`}
-              key={product.Id}
+              // href={`products/${product.slug || ""}`}
+              href={""}
+              key={product.id}
               className="h-full w-full"
             >
               <motion.div
-                key={product.Id}
+                key={product.id}
                 className="group p-4 rounded-xl border flex gap-3 h-full items-center relative group"
-                onMouseEnter={() =>
-                  SendDataGoogle("Xem", product.category, product.title)
-                }
-                onClick={() => {
-                  SendDataGoogle(
-                    "Xem_chi_tiết",
-                    product.category,
-                    product.title
-                  );
-                }}
+                // onMouseEnter={() =>
+                //   SendDataGoogle("Xem", product.category, product.title)
+                // }
+                // onClick={() => {
+                //   SendDataGoogle(
+                //     "Xem_chi_tiết",
+                //     product.category,
+                //     product.title
+                //   );
+                // }}
               >
-                {product.showDiscountPercentage === "Show" && (
+                {/* {product.showDiscountPercentage === "Show" && (
                   <div className="absolute top-2 left-2  text-white px-3 py-1 rounded-full text-sm font-medium z-10">
                     <PulsatingButton
                       pulseColor="red"
@@ -64,35 +69,32 @@ export const ProductListView = ({ products }: { products: ProductDto[] }) => {
                       </span>
                     </PulsatingButton>
                   </div>
-                )}
+                )} */}
                 <div className="relative w-full max-w-[300px] h-48 rounded-lg overflow-hidden  cursor-pointer">
                   <Image
-                    src={
-                      product.imageUrl?.at(0)?.thumbnails?.card_cover
-                        ?.signedUrl || ""
-                    }
-                    alt={product.title}
+                    src={product.images?.at(0) || ""}
+                    alt={product.name}
                     layout="fill"
                     objectFit="contain"
                     className="group-hover:scale-110"
                   />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-lg mb-2">
-                    {product.title}
-                  </h3>
-                  <p className="text-gray-600 mb-1">{product.brand}</p>
+                  <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
+                  <p className="text-gray-600 mb-1">
+                    {product.tradeMarkName || ""}
+                  </p>
                   <div className="flex items-center  mb-2">
                     <p className="text-red-600 font-semibold text-base md:text-lg">
-                      {product.price.toLocaleString()}₫
+                      {product.basePrice.toLocaleString()}₫
                     </p>
-                    {product.showDiscountPercentage === "Show" && (
+                    {/* {product.showDiscountPercentage === "Show" && (
                       <span className="text-sm text-gray-500 line-through px-2">
                         {product.originalPrice.toLocaleString()}₫
                       </span>
-                    )}
+                    )} */}
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-500 mt-auto">
+                  {/* <div className="flex items-center gap-2 text-sm text-gray-500 mt-auto">
                     <span className="flex items-center gap-1">
                       <ShoppingBasket className="w-4 h-4" />
                       {product.sold} đã bán
@@ -101,7 +103,7 @@ export const ProductListView = ({ products }: { products: ProductDto[] }) => {
                       <Eye className="w-3 h-3" />
                     </span>
                     <span>{product.viewers.toLocaleString()} lượt xem</span>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="opacity-0 group-hover:opacity-100">
                   <div className="flex items-center bg-gray-100 rounded-lg w-fit">
@@ -110,7 +112,7 @@ export const ProductListView = ({ products }: { products: ProductDto[] }) => {
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        handleQuantityChange(product.Id, quantity - 1);
+                        handleQuantityChange(product.id, quantity - 1);
                       }}
                       className=" hover:bg-gray-200 "
                     >
@@ -123,7 +125,7 @@ export const ProductListView = ({ products }: { products: ProductDto[] }) => {
                         e.preventDefault();
                         e.stopPropagation();
                         const selectedItem = quantity + 1;
-                        handleQuantityChange(product.Id, selectedItem);
+                        handleQuantityChange(product.id, selectedItem);
                       }}
                       className="hover:bg-gray-200"
                     >
@@ -136,11 +138,11 @@ export const ProductListView = ({ products }: { products: ProductDto[] }) => {
                         e.preventDefault();
                         e.stopPropagation();
                         addToCart(product, quantity);
-                        SendDataGoogle(
-                          "Thêm_vào_giỏ_hàng",
-                          product.category,
-                          product.title
-                        );
+                        // SendDataGoogle(
+                        //   "Thêm_vào_giỏ_hàng",
+                        //   product.category,
+                        //   product.title
+                        // );
                         toast.success("Đã thêm thành công!");
                       }}
                       className="bg-[#B10836] mt-4"

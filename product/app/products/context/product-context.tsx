@@ -1,39 +1,31 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import { ProductDto, CategoryListDto } from "@/types/types";
-import { useGetProduct } from "../hooks/get";
+import { CategoryKiotViet, Customer, ProductKiotViet } from "../types/kiotviet";
+import { useGetKiotViet } from "../hooks/get-kiotviet";
 
 interface ProductContextType {
-  productServer: ProductDto[];
-  categories: string[];
-  categoryList: CategoryListDto[];
-  brands: string[];
+  products: ProductKiotViet[];
+  categories: CategoryKiotViet[];
   maxPrice: number;
   isLoading: boolean;
+  customer: Customer[];
 }
 
 const ProductContext = createContext<ProductContextType | null>(null);
 
 export function ProductProvider({ children }: { children: React.ReactNode }) {
-  const {
-    productServer,
-    categories,
-    categoryList,
-    brands,
-    maxPrice,
-    isLoading,
-  } = useGetProduct();
+  const { products, categories, maxPrice, isLoading, customer } =
+    useGetKiotViet();
 
   return (
     <ProductContext.Provider
       value={{
-        productServer,
+        products,
         categories,
-        categoryList,
-        brands,
         maxPrice,
         isLoading,
+        customer,
       }}
     >
       {children}

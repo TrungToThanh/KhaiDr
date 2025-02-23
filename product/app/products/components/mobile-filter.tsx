@@ -1,32 +1,26 @@
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Filter, Store, Tag } from "lucide-react";
+import { Filter, Tag } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CategoryListDto } from "@/types/types";
+import { CategoryKiotViet } from "../types/kiotviet";
 
 export type Props = {
-  categoryList: CategoryListDto[];
-  brands: string[];
-  selectedCategories: CategoryListDto[];
-  selectedBrands: string[];
+  categories: CategoryKiotViet[];
+  selectedCategories: CategoryKiotViet[];
   maxPrice: number;
   maxPriceFilter: number;
-  setSelectedCategories: (categories: CategoryListDto[]) => void;
-  setSelectedBrands: (brands: string[]) => void;
+  setSelectedCategories: (categories: CategoryKiotViet[]) => void;
   setMaxPrice: (price: number) => void;
 };
 
 export const MobileFilter = ({
-  categoryList,
-  brands,
+  categories,
   selectedCategories,
-  selectedBrands,
   maxPrice,
   maxPriceFilter,
   setMaxPrice,
-  setSelectedBrands,
   setSelectedCategories,
 }: Props) => {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -65,7 +59,7 @@ export const MobileFilter = ({
                 </button>
               </div>
               <div className="mb-8">
-                {categoryList.map((category) => (
+                {categories.map((category) => (
                   <div
                     key={category?.categoryName}
                     className="flex items-center mb-2 gap-2 text-sm justify-between"
@@ -90,34 +84,10 @@ export const MobileFilter = ({
                       />
                       <span>{category?.categoryName}</span>
                     </div>
-                    <span>({category?.categoryCount})</span>
+                    {/* <span>({category?.categoryCount})</span> */}
                   </div>
                 ))}
               </div>
-
-              <div className="text-xl font-semibold mt-10 mb-4 flex items-center gap-2">
-                <Store className="w-5 h-5" /> THƯƠNG HIỆU
-              </div>
-              {brands.map((brand) => (
-                <div
-                  key={brand}
-                  className="flex items-center mb-2 gap-2 text-sm"
-                >
-                  <Checkbox
-                    id={brand}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setSelectedBrands([...selectedBrands, brand]);
-                      } else {
-                        setSelectedBrands(
-                          selectedBrands.filter((b) => b !== brand)
-                        );
-                      }
-                    }}
-                  />
-                  <span>{brand}</span>
-                </div>
-              ))}
 
               <div className="text-xl font-semibold mt-10 mb-4 flex items-center gap-2">
                 <Tag className="w-5 h-5" /> GIÁ TIỀN

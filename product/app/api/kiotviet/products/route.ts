@@ -1,0 +1,26 @@
+import { NextResponse } from "next/server";
+import { getAccessToken, RETAILER } from "../lib/api";
+
+export async function GET() {
+  try {
+    const accessToken = await getAccessToken();
+
+    const productResponse = await fetch("https://public.kiotapi.com/products", {
+      method: "GET",
+      headers: {
+        Retailer: RETAILER,
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!productResponse.ok) throw new Error("Lỗi khi lấy sản phẩm");
+
+    const products = await productResponse.json();
+    return NextResponse.json({ products: products.data });
+  } catch (error) {
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Lỗi hệ thống" },
+      { status: 500 }
+    );
+  }
+}

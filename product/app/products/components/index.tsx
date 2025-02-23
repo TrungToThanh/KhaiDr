@@ -5,16 +5,18 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Grid, List } from "lucide-react";
 import dynamic from "next/dynamic";
-import Cart from "./cart";
+// import Cart from "./cart";
 import { ProductGridView } from "./product-grid-view";
-import { ProductListView } from "./product-list-view";
+// import { ProductListView } from "./product-list-view";
 import { Payment } from "./payment";
 import { DesktopFilter } from "./desktop-filter";
 import { MobileFilter } from "./mobile-filter";
-import { CategoryListDto, ProductDto } from "@/types/types";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Skeleton } from "@/components/ui/skeleton";
 import Footer from "@/app/layout/footer";
+import { CategoryKiotViet, ProductKiotViet } from "../types/kiotviet";
+import { ProductListView } from "./product-list-view";
+import Cart from "./cart";
 
 const PlaceholdersAndVanishInput = dynamic(
   () =>
@@ -35,25 +37,22 @@ declare global {
 }
 
 type Props = {
-  products: ProductDto[];
-  brands: string[];
+  products: ProductKiotViet[];
   maxPrice: number;
-  categoryList: CategoryListDto[];
+  categories: CategoryKiotViet[];
   isLoading: boolean;
 };
 
 export default function ProductPageIndex({
   products,
-  brands,
-  categoryList,
+  categories,
   maxPrice,
   isLoading,
 }: Props) {
   const isMobile = useIsMobile();
   const [selectedCategories, setSelectedCategories] = useState<
-    CategoryListDto[]
+    CategoryKiotViet[]
   >([]);
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [maxPriceFilter, setMaxPrice] = useState<number>(0);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showCart, setShowCart] = useState(false);
@@ -70,7 +69,7 @@ export default function ProductPageIndex({
   const filteredProducts = useMemo(() => {
     return (
       products?.filter((product) => {
-        const matchesSearch = product.title
+        const matchesSearch = product.name
           .toLowerCase()
           .includes(searchTerm.toLowerCase());
 
@@ -79,27 +78,15 @@ export default function ProductPageIndex({
           selectedCategories.some(
             (category) =>
               category.categoryName.toLowerCase() ===
-              product.category.toLowerCase()
+              product.categoryName.toLowerCase()
           );
 
-        const matchesBrand =
-          selectedBrands.length === 0 ||
-          selectedBrands.some(
-            (brand) => brand.toLowerCase() === product.brand.toLowerCase()
-          );
+        const matchesPrice = product.basePrice <= maxPriceFilter;
 
-        const matchesPrice = product.price <= maxPriceFilter;
-
-        return matchesSearch && matchesCategory && matchesBrand && matchesPrice;
+        return matchesSearch && matchesCategory && matchesPrice;
       }) ?? []
     );
-  }, [
-    products,
-    selectedCategories,
-    selectedBrands,
-    maxPriceFilter,
-    searchTerm,
-  ]);
+  }, [products, selectedCategories, maxPriceFilter, searchTerm]);
 
   if (isLoading) return <Skeleton />;
 
@@ -136,14 +123,11 @@ export default function ProductPageIndex({
       <div className="flex flex-col md:flex-row px-2 md:px-4 h-full">
         {/* Mobile */}
         <MobileFilter
-          categoryList={categoryList}
-          brands={brands}
+          categories={categories}
           selectedCategories={selectedCategories}
-          selectedBrands={selectedBrands}
           maxPrice={maxPrice}
           maxPriceFilter={maxPriceFilter}
           setSelectedCategories={setSelectedCategories}
-          setSelectedBrands={setSelectedBrands}
           setMaxPrice={setMaxPrice}
         />
 
@@ -163,14 +147,11 @@ export default function ProductPageIndex({
 
         {/* Desktop */}
         <DesktopFilter
-          categoryList={categoryList}
-          brands={brands}
+          categories={categories}
           selectedCategories={selectedCategories}
-          selectedBrands={selectedBrands}
           maxPrice={maxPrice}
           maxPriceFilter={maxPriceFilter}
           setSelectedCategories={setSelectedCategories}
-          setSelectedBrands={setSelectedBrands}
           setMaxPrice={setMaxPrice}
         />
 

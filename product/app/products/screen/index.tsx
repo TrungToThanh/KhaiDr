@@ -1,22 +1,20 @@
 "use client";
 
 import ProductPageIndex from "../components";
-import { useGetProduct } from "../hooks/get";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useGetKiotViet } from "../hooks/get-kiotviet";
 
 function ProductPageContent() {
-  const { productServer, brands, categoryList, maxPrice, isLoading } =
-    useGetProduct();
+  const { products, categories, maxPrice, isLoading } = useGetKiotViet();
 
   if (isLoading) return <Skeleton />;
 
   return (
     <ProductPageIndex
-      products={productServer}
-      brands={brands}
+      products={products}
+      categories={categories}
       maxPrice={maxPrice}
-      categoryList={categoryList}
       isLoading={isLoading}
     />
   );
